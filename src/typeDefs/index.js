@@ -8,6 +8,7 @@ const typeDefs = gql`
 
   type Mutation {
     addProject(title: String! ): Project
+    deleteCard(projectId: String!, listId: String!, cardId: String! ): Project
   }
 
   type Project {
@@ -18,7 +19,7 @@ const typeDefs = gql`
 
   type List {
     id: ID!,
-    header: String!,
+    title: String!,
     cards: [Card]
   }
 

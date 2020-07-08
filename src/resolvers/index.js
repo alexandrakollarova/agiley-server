@@ -9,9 +9,9 @@ export const resolvers = {
       return Project.find({})
     },
     project: (_, { id }) => {
-      if (!mongoose.Types.ObjectId.isValise(id)) {
-        throw new UserInputError(`${id} is not a valid project ID.`)
-      }
+      // if (!mongoose.Types.ObjectId.isValise(id)) {
+      //   throw new UserInputError(`${id} is not a valid project ID.`)
+      //}
       return Project.findById(id)
     },
   },
@@ -21,12 +21,18 @@ export const resolvers = {
       const newProject = {
         title,
         lists: [
-          { id: uuid(), header: 'Todo', cards: [] },
-          { id: uuid(), header: 'In-progress', cards: [] },
-          { id: uuid(), header: 'Done', cards: [] }
+          { id: uuid(), title: 'Todo', cards: [] },
+          { id: uuid(), title: 'In-progress', cards: [] },
+          { id: uuid(), title: 'Done', cards: [] }
         ]
       }
       return Project.create(newProject)
+    },
+    deleteCard: (_, { projectId, listId, cardId }) => {
+      return Project.updateOne(
+        { _id: projectId, 'lists.id': listId },
+        { $pull: { 'lists.$.cards': { id: cardId } } }
+      )
     }
   }
 }
