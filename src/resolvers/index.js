@@ -28,11 +28,53 @@ export const resolvers = {
       }
       return Project.create(newProject)
     },
-    deleteCard: (_, { projectId, listId, cardId }) => {
+    addCard: (_, { projectId, listId, title, content }) => {
+      const newCard = {
+        id: uuid(),
+        title,
+        content
+      }
       return Project.updateOne(
         { _id: projectId, 'lists.id': listId },
-        { $pull: { 'lists.$.cards': { id: cardId } } }
+        { $push: { 'lists.$.cards': newCard } }
       )
+    },
+    deleteCard: (_, { projectId, listId, cardId }) => {
+      let error
+      Project.findOneAndUpdate(
+        { '_id': projectId, 'lists._id': listId },
+        { $pull: { 'lists.$.cards': { _id: cardId } } },
+        (err) => error = err
+      )
+      if (error)
+        return {
+          success: false,
+          message: 'Failed to delete card'
+        }
+      return {
+        success: true,
+        message: `Deleted card with id ${cardId}`
+      }
+
+      // Project.findById(projectId).then(project => {
+      //   return project.lists.find(list => list._id == listId)
+      // })
+      //   .then(list => list.cards.filter(card => card._id != cardId))
+      //   .then(res => {
+      //     console.log(res)
+      //     if (!res) {
+      //       return {
+      //         success: false,
+      //         message: 'Failed to delete card'
+      //       }
+      //     } else {
+      //       return {
+      //         success: true,
+      //         message: `Deleted card with id ${cardId}`
+      //       }
+      //     }
+      //   })
+      // project.save()
     }
   }
 }

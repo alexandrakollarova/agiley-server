@@ -18,7 +18,7 @@ import {
   try {
     await mongoose.connect(
       `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
-      { useNewUrlParser: true, useUnifiedTopology: true }
+      { useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true }
     )
 
     const app = express()
