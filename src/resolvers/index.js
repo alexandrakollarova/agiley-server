@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import { UserInputError } from 'apollo-server-express'
 import Project from '../models'
-import { v4 as uuid } from 'uuid'
 
 export const resolvers = {
   Query: {
@@ -18,63 +17,72 @@ export const resolvers = {
 
   Mutation: {
     addProject: (_, { title }) => {
+      let error
+
       const newProject = {
         title,
         lists: [
-          { id: uuid(), title: 'Todo', cards: [] },
-          { id: uuid(), title: 'In-progress', cards: [] },
-          { id: uuid(), title: 'Done', cards: [] }
+          { title: 'Todo', cards: [] },
+          { title: 'In-progress', cards: [] },
+          { title: 'Done', cards: [] }
         ]
       }
-      return Project.create(newProject)
+      Project.create(newProject, (err) => error = err)
+
+      if (error)
+        return {
+          success: false,
+          message: 'Failed to add project'
+        }
+      return {
+        success: true,
+        message: `Added project with title ${title}`
+      }
     },
     addCard: (_, { projectId, listId, title, content }) => {
+      let error
+
       const newCard = {
-        id: uuid(),
         title,
         content
       }
-      return Project.updateOne(
-        { _id: projectId, 'lists.id': listId },
-        { $push: { 'lists.$.cards': newCard } }
+
+      Project.updateOne(
+        { '_id': projectId, 'lists._id': listId },
+        { $push: { 'lists.$.cards': newCard } },
+        (err) => error = err
       )
+
+      if (error)
+        return {
+          success: false,
+          message: 'Failed to add card'
+        }
+
+      return {
+        success: true,
+        message: `Added card with title ${newCard.title} and content ${newCard.content}`
+      }
     },
     deleteCard: (_, { projectId, listId, cardId }) => {
       let error
+
       Project.findOneAndUpdate(
         { '_id': projectId, 'lists._id': listId },
         { $pull: { 'lists.$.cards': { _id: cardId } } },
         (err) => error = err
       )
+
       if (error)
         return {
           success: false,
           message: 'Failed to delete card'
         }
+
       return {
         success: true,
         message: `Deleted card with id ${cardId}`
       }
-
-      // Project.findById(projectId).then(project => {
-      //   return project.lists.find(list => list._id == listId)
-      // })
-      //   .then(list => list.cards.filter(card => card._id != cardId))
-      //   .then(res => {
-      //     console.log(res)
-      //     if (!res) {
-      //       return {
-      //         success: false,
-      //         message: 'Failed to delete card'
-      //       }
-      //     } else {
-      //       return {
-      //         success: true,
-      //         message: `Deleted card with id ${cardId}`
-      //       }
-      //     }
-      //   })
-      // project.save()
     }
   }
 }

@@ -33,7 +33,6 @@ const typeDefs = gql`
   type Feedback {
     success: Boolean!
     message: String!
-    # projects: [Project!]!
   }
 `
 
