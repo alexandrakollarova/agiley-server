@@ -6,13 +6,6 @@ const projectTypeDefs = gql`
   input insertProjectInput {
     title: String!
   }
-
-  input addSectionToProjectInput {
-    id: ID!
-    title: String!
-    label: String!
-    pos: Int!
-  }
   
   type Project {
     id: ID!
@@ -27,7 +20,6 @@ const projectTypeDefs = gql`
 
   extend type Mutation {
     insertProject(request: insertProjectInput): Project
-    addSectionToProject(request: addSectionToProjectInput): Project
   }
 `
 

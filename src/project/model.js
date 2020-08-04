@@ -1,4 +1,4 @@
-import Mongoose from 'mongoose'
+const Mongoose = require("mongoose")
 
 const projectSchema = new Mongoose.Schema({
   title: {
@@ -23,19 +23,8 @@ class Project {
     const project = this(title)
     return project.save()
   }
-
-  static addSectionToProject(id, sectionInfo) {
-    // let newSections
-    // return this.findOne({ _id: Mongoose.mongo.ObjectID(id) }).then(res => {
-    //   newSections = res.sections.concat(sectionInfo)
-    // })
-    return this.update(
-      { _id: Mongoose.mongo.ObjectID(id) },
-      { $push: { sections: sectionInfo } }
-    ).exec()
-  }
 }
 
 projectSchema.loadClass(Project)
 
-export default Mongoose.model('Project', projectSchema)
+module.exports = Mongoose.model('Project', projectSchema)

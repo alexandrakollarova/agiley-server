@@ -29,12 +29,16 @@ class Section {
   static insertSection(id, sectionInfo) {
     const section = this(sectionInfo)
 
-    Project.findOne({ _id: Mongoose.mongo.ObjectID(id) }).then(res => {
-      return section.save().then(section => {
-        res.sections.push(section._id)
-        return Project.save()
-      })
+    Project.findOne({
+      _id: Mongoose.mongo.ObjectID(id)
+    }).then(res => {
+      return section.save()
+        .then(section => {
+          res.sections.push({ id: section._id })
+          res.save()
+        })
     })
+    return section
   }
 
   static updatePos(id, pos) {
