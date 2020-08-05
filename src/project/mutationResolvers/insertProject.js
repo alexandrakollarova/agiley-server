@@ -7,7 +7,7 @@ module.exports = async (__, args, cxt) => {
     const project = await cxt.project.insertProject(projectInfo)
 
     cxt.publisher.publish(cxt.SUBSCRIPTION_CONSTANTS.PROJECT_ADDED, {
-      projectAdded: project,
+      projectAdded: project
     })
 
     return project

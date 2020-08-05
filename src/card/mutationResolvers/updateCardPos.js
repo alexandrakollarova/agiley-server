@@ -8,11 +8,9 @@ module.exports = async (__, args, cxt) => {
     cxt.publisher.publish(cxt.SUBSCRIPTION_CONSTANTS.ON_CARD_POS_CHANGE, {
       onCardPosChange: card,
     });
-
     return card;
   } catch (e) {
     console.log("Error => ", e);
-
     return null;
   }
 };

@@ -41,6 +41,16 @@ class Section {
     return section
   }
 
+
+  static addInitialSections(id) {
+    this.create(
+      { title: 'todo', label: 'todo', pos: 2048, projectId: id },
+      { title: 'in progress', label: 'in progress', pos: 19456, projectId: id },
+      { title: 'done', label: 'done', pos: 35840, projectId: id }
+    )
+    this.save()
+  }
+
   static updatePos(id, pos) {
     return this.findOneAndUpdate(
       { _id: Mongoose.mongo.ObjectID(id) },

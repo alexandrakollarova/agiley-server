@@ -15,6 +15,10 @@ const sectionTypeDefs = gql`
     pos: Int!
   }
 
+  input insertProjectId {
+    projectId: ID!
+  }
+
   type Section {
     id: ID!
     title: String!
@@ -32,6 +36,7 @@ const sectionTypeDefs = gql`
   extend type Mutation {
     insertSection(request: insertSectionInput): Section
     updateSectionPos(request: updateSectionPosInput): Section
+    addInitialSections(request: insertProjectId): Section
   }
 `;
 
