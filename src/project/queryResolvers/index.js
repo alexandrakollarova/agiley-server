@@ -1,7 +1,5 @@
-const getProjects = require("./getProjects")
-const getProjectById = require("./getProjectById")
+const getProjects = require('./getProjects').default
 
 module.exports = {
-  getProjects,
-  getProjectById
+  getProjects
 }

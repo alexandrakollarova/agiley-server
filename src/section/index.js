@@ -1,13 +1,13 @@
-const mutationResolvers = require("./mutationResolvers");
-const queryResolvers = require("./queryResolvers");
-const { gql } = require("apollo-server-express");
+const mutationResolvers = require('./mutationResolvers')
+const queryResolvers = require('./queryResolvers')
+const { gql } = require('apollo-server-express')
 
 const sectionTypeDefs = gql`
   input insertSectionInput {
-    id: ID!
     title: String!
     label: String!
     pos: Int!
+    projectId: ID!
   }
 
   input updateSectionPosInput {
@@ -15,7 +15,7 @@ const sectionTypeDefs = gql`
     pos: Int!
   }
 
-  input insertProjectId {
+  input getProjectId {
     projectId: ID!
   }
 
@@ -30,15 +30,15 @@ const sectionTypeDefs = gql`
 
   extend type Query {
     getSections: [Section]
-    getSectionsById(ids: [ID]!): [Section]
+    getSectionsByProjectId(request: getProjectId): [Section]
   }
 
   extend type Mutation {
     insertSection(request: insertSectionInput): Section
     updateSectionPos(request: updateSectionPosInput): Section
-    addInitialSections(request: insertProjectId): Section
+    addInitialSections(request: getProjectId): [Section]
   }
-`;
+`
 
 const sectionResolvers = {
   Query: {
@@ -47,9 +47,9 @@ const sectionResolvers = {
   Mutation: {
     ...mutationResolvers,
   },
-};
+}
 
 module.exports = {
   sectionTypeDefs,
   sectionResolvers,
-};
+}

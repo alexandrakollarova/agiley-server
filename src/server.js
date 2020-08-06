@@ -13,7 +13,6 @@ import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
 import {
-  NODE_ENV,
   PORT,
   DB_USERNAME,
   DB_PASSWORD,
@@ -64,9 +63,14 @@ const SubscriptionsResolvers = {
 }
 
 const customResolvers = {
+  Project: {
+    sections(parent, args, cxt) {
+      return cxt.section.getSectionsByProjectId(parent._id)
+    }
+  },
   Section: {
     cards(parent, args, cxt) {
-      return cxt.card.getCardBySectionId(parent._id);
+      return cxt.card.getCardsBySectionId(parent._id)
     },
   },
 }
@@ -85,7 +89,7 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
-    console.log("MongoDB connected successfully");
+    console.log('MongoDB connected successfully')
 
     const server = new ApolloServer({
       typeDefs,
@@ -95,11 +99,11 @@ mongoose
         section: sectionModel,
         project: projectModel,
         publisher: pubsub,
-        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
-      }),
+        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
+      })
     })
 
-    const app = express();
+    const app = express()
     app.use(cors())
     app.disable('x-powered-by')
 
@@ -108,10 +112,9 @@ mongoose
     const httpServer = createServer(app)
     server.installSubscriptionHandlers(httpServer)
 
-    const PORT = process.env.PORT || 4444
     httpServer.listen({ port: PORT }, () => {
       console.log(`Server is running on port ${PORT}`)
-    });
+    })
   })
   .catch((err) => {
     console.log(err)

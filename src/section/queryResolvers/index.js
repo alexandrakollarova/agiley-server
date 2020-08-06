@@ -1,7 +1,7 @@
-const getSections = require("./getSections")
-const getSectionsById = require("./getSectionsById")
+const getSections = require('./getSections').default
+const getSectionsByProjectId = require('./getSectionsByProjectId').default
 
 module.exports = {
   getSections,
-  getSectionsById
+  getSectionsByProjectId
 }

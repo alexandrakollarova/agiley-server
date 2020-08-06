@@ -1,4 +1,4 @@
-module.exports = async (__, args, cxt) => {
+export default async (__, args, cxt) => {
   try {
     const projectInfo = {
       title: args.request.title
@@ -12,7 +12,7 @@ module.exports = async (__, args, cxt) => {
 
     return project
   } catch (e) {
-    console.log(e)
-    return null;
+    console.log('error =>', e)
+    return null
   }
 }
