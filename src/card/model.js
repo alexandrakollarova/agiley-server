@@ -1,4 +1,4 @@
-const Mongoose = require("mongoose");
+const Mongoose = require('mongoose')
 
 const cardSchema = new Mongoose.Schema(
   {
@@ -17,37 +17,41 @@ const cardSchema = new Mongoose.Schema(
     },
     sectionId: {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: "Section",
+      ref: 'Section',
+      required: true
     },
   },
   { timestamps: true }
-);
+)
 
 class Card {
   static insertCard(cardInfo) {
-    const card = this(cardInfo);
-    return card.save();
+    const card = this(cardInfo)
+    return card.save()
   }
 
-  static getCardBySectionId(sectionId) {
-    return this.find({ sectionId }).sort("pos").exec();
+  static getCardsBySectionId(sectionId) {
+    return this.find({ sectionId }).sort('pos').exec()
   }
 
-  static updatePos(cardId, pos, sectionId) {
+  static updateCardPos(cardId, pos, sectionId) {
     return this.findOneAndUpdate(
       {
-        _id: Mongoose.mongo.ObjectID(cardId),
+        _id: Mongoose.mongo.ObjectID(cardId)
       },
       {
         $set: {
           pos,
-          sectionId,
-        },
+          sectionId
+        }
+      },
+      {
+        new: true
       }
-    ).exec();
+    ).exec()
   }
 }
 
-cardSchema.loadClass(Card);
+cardSchema.loadClass(Card)
 
-module.exports = Mongoose.model("Card", cardSchema);
+module.exports = Mongoose.model('Card', cardSchema)

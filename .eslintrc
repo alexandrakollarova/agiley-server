@@ -1,0 +1,24 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "env": {
+    "es6": true
+  },
+  "rules": {
+    "indent": [
+      "warn",
+      2
+    ],
+    "semi": [
+      "warn",
+      "never"
+    ],
+    "quotes": [
+      "warn",
+      "single"
+    ]
+  }
+}

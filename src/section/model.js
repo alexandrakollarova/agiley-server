@@ -1,5 +1,4 @@
-const Mongoose = require("mongoose")
-const Project = require("../project/model")
+const Mongoose = require('mongoose')
 
 const sectionSchema = new Mongoose.Schema({
   title: {
@@ -15,33 +14,34 @@ const sectionSchema = new Mongoose.Schema({
     type: Number,
     required: true,
   },
+  projectId: {
+    type: Mongoose.Schema.Types.ObjectId,
+    ref: 'Project',
+    required: true
+  },
 })
 
 class Section {
   static getSections() {
-    return this.find().sort("pos").exec()
+    return this.find().sort('pos').exec()
   }
 
-  static getSectionsById(ids) {
-    return this.find().where('_id').in(ids).then(res => res)
+  static getSectionsByProjectId(projectId) {
+    return this.find({ projectId }).sort('pos').exec()
   }
 
-  static insertSection(id, sectionInfo) {
+  static insertSection(sectionInfo) {
     const section = this(sectionInfo)
 
-    Project.findOne({
-      _id: Mongoose.mongo.ObjectID(id)
-    }).then(res => {
-      return section.save()
-        .then(section => {
-          res.sections.push({ id: section._id })
-          res.save()
-        })
-    })
-    return section
+    return section.save()
   }
 
-  static updatePos(id, pos) {
+
+  static addInitialSections(sections) {
+    return this.insertMany(sections)
+  }
+
+  static updateSectionPos(id, pos) {
     return this.findOneAndUpdate(
       { _id: Mongoose.mongo.ObjectID(id) },
       {
@@ -50,12 +50,12 @@ class Section {
         },
       },
       {
-        new: true,
+        new: true
       }
     ).exec()
   }
 }
 
-sectionSchema.loadClass(Section);
+sectionSchema.loadClass(Section)
 
-module.exports = Mongoose.model("Section", sectionSchema);
+module.exports = Mongoose.model('Section', sectionSchema)

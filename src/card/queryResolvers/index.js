@@ -1,5 +1,5 @@
-const fetchCardsBySectionId = require("./fetchCardsBySectionId");
+const getCardsBySectionId = require('./getCardsBySectionId').default
 
 module.exports = {
-  fetchCardsBySectionId,
-};
+  getCardsBySectionId
+}

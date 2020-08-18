@@ -1,6 +1,6 @@
-const mutationResolvers = require("./mutationResolvers");
-const queryResolvers = require("./queryResolvers");
-const { gql } = require("apollo-server-express");
+const mutationResolvers = require('./mutationResolvers')
+const queryResolvers = require('./queryResolvers')
+const { gql } = require('apollo-server-express')
 
 const projectTypeDefs = gql`
   input insertProjectInput {
@@ -15,7 +15,6 @@ const projectTypeDefs = gql`
 
   extend type Query {
     getProjects: [Project]
-    getProjectById(id: ID!): Project
   }
 
   extend type Mutation {
