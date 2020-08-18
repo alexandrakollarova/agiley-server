@@ -37,7 +37,7 @@ const typeDefs = gql`
 
 const pubsub = new PubSub()
 
-const SubscriptionsResolvers = {
+const subscriptionsResolvers = {
   Subscription: {
     projectAdded: {
       subscribe: () =>
@@ -63,16 +63,21 @@ const SubscriptionsResolvers = {
 }
 
 const customResolvers = {
-  Project: {
-    sections(parent, args, cxt) {
-      return cxt.section.getSectionsByProjectId(parent._id)
-    }
-  },
+  // Project: {
+  //   sections(parent, args, cxt) {
+  //     return cxt.section.getSectionsByProjectId(parent._id)
+  //   }
+  // },
   Section: {
     cards(parent, args, cxt) {
-      return cxt.card.getCardsBySectionId(parent._id)
-    },
-  },
+      try {
+        return cxt.card.getCardsBySectionId(parent._id)
+      } catch (e) {
+        console.log('error =>', e)
+        return null
+      }
+    }
+  }
 }
 
 const resolvers = merge(
@@ -80,13 +85,13 @@ const resolvers = merge(
   sectionResolvers,
   projectResolvers,
   customResolvers,
-  SubscriptionsResolvers
+  subscriptionsResolvers
 )
 
 mongoose
   .connect(
     `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
+    { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )
   .then(() => {
     console.log('MongoDB connected successfully')
@@ -98,8 +103,8 @@ mongoose
         card: cardModel,
         section: sectionModel,
         project: projectModel,
-        publisher: pubsub,
-        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
+        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
+        publisher: pubsub
       })
     })
 

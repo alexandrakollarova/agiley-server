@@ -1,5 +1,4 @@
 const Mongoose = require('mongoose')
-const Project = require('../project/model')
 
 const sectionSchema = new Mongoose.Schema({
   title: {
@@ -18,6 +17,7 @@ const sectionSchema = new Mongoose.Schema({
   projectId: {
     type: Mongoose.Schema.Types.ObjectId,
     ref: 'Project',
+    required: true
   },
 })
 
@@ -50,7 +50,7 @@ class Section {
         },
       },
       {
-        new: true,
+        new: true
       }
     ).exec()
   }

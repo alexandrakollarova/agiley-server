@@ -1,6 +1,5 @@
 const mutationResolvers = require('./mutationResolvers')
 const queryResolvers = require('./queryResolvers')
-
 const { gql } = require('apollo-server-express')
 
 const cardTypeDefs = gql`
@@ -18,7 +17,7 @@ const cardTypeDefs = gql`
   }
 
   input cardSectionInput {
-    sectionId: String!
+    sectionId: ID!
   }
 
   type Card {
@@ -27,7 +26,7 @@ const cardTypeDefs = gql`
     label: String!
     description: String
     pos: Int
-    sectionId: String!
+    sectionId: ID!
   }
 
   type Query {
@@ -43,14 +42,14 @@ const cardTypeDefs = gql`
 
 const cardResolvers = {
   Query: {
-    ...queryResolvers,
+    ...queryResolvers
   },
   Mutation: {
-    ...mutationResolvers,
+    ...mutationResolvers
   },
 }
 
 module.exports = {
   cardTypeDefs,
-  cardResolvers,
+  cardResolvers
 }

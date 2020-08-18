@@ -8,7 +8,6 @@ export default async (__, args, cxt) => {
     cxt.publisher.publish(cxt.SUBSCRIPTION_CONSTANTS.ON_SECTION_POS_CHANGE, {
       onSectionPosChange: section,
     })
-
     return section
   } catch (e) {
     console.log('error =>', e)

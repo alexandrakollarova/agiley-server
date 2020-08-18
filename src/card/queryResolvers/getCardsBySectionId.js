@@ -3,7 +3,6 @@ export default async (__, args, cxt) => {
     const sectionId = args.request.sectionId
 
     const cards = await cxt.card.getCardsBySectionId(sectionId)
-
     return cards
   } catch (e) {
     console.log('error =>', e)

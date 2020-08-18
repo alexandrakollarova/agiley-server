@@ -18,6 +18,7 @@ const cardSchema = new Mongoose.Schema(
     sectionId: {
       type: Mongoose.Schema.Types.ObjectId,
       ref: 'Section',
+      required: true
     },
   },
   { timestamps: true }
@@ -43,6 +44,9 @@ class Card {
           pos,
           sectionId
         }
+      },
+      {
+        new: true
       }
     ).exec()
   }

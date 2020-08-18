@@ -25,6 +25,7 @@ const sectionTypeDefs = gql`
     label: String!
     pos: Int!
     description: String
+    projectId: ID!
     cards: [Card]
   }
 

@@ -7,7 +7,7 @@ export default async (__, args, cxt) => {
     const card = await cxt.card.updateCardPos(cardId, pos, sectionId)
 
     cxt.publisher.publish(cxt.SUBSCRIPTION_CONSTANTS.ON_CARD_POS_CHANGE, {
-      onCardPosChange: card,
+      onCardPosChange: card
     })
     return card
   } catch (e) {

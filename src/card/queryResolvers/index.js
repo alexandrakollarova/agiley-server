@@ -1,4 +1,4 @@
-const getCardsBySectionId = require("./getCardsBySectionId").default
+const getCardsBySectionId = require('./getCardsBySectionId').default
 
 module.exports = {
   getCardsBySectionId
