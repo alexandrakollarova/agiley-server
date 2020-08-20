@@ -108,15 +108,16 @@ mongoose
     const app = express()
 
     const corsOptions = {
-      origin: '*'
+      origin: '*',
+      credentials: true
     }
 
-    //app.use(cors(corsOptions))
+    app.use(cors(corsOptions))
     app.disable('x-powered-by')
 
     server.applyMiddleware({
       app,
-      cors: cors(corsOptions)
+      cors: false
     })
 
     const httpServer = createServer(app)
