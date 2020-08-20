@@ -108,7 +108,7 @@ mongoose
     const app = express()
 
     const corsOptions = {
-      origin: '*false',
+      origin: '*',
       credentials: true
     }
 
@@ -117,6 +117,7 @@ mongoose
 
     server.applyMiddleware({
       app,
+      path: '/graphql',
       cors: false
     })
 
