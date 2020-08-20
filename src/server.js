@@ -12,6 +12,7 @@ import cardModel from './card/model'
 import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
+require('dotenv').load()
 import {
   PORT,
   DB_USERNAME,
