@@ -116,7 +116,7 @@ mongoose
 
     server.applyMiddleware({
       app,
-      cors: corsOptions
+      cors: cors(corsOptions)
     })
 
     const httpServer = createServer(app)
