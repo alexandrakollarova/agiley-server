@@ -21,6 +21,8 @@ import {
   DB_NAME
 } from '../config'
 
+require('events').EventEmitter.defaultMaxListeners = 100
+
 const typeDefs = gql`
   type Subscription {
     projectAdded: Project
@@ -63,11 +65,6 @@ const subscriptionsResolvers = {
 }
 
 const customResolvers = {
-  // Project: {
-  //   sections(parent, args, cxt) {
-  //     return cxt.section.getSectionsByProjectId(parent._id)
-  //   }
-  // },
   Section: {
     cards(parent, args, cxt) {
       try {
@@ -109,10 +106,19 @@ mongoose
     })
 
     const app = express()
-    app.use(cors())
+
+    const corsOptions = {
+      origin: true,
+      credentials: true
+    }
+
+    app.use(cors(corsOptions))
     app.disable('x-powered-by')
 
-    server.applyMiddleware({ app })
+    server.applyMiddleware({
+      app,
+      cors: false
+    })
 
     const httpServer = createServer(app)
     server.installSubscriptionHandlers(httpServer)
