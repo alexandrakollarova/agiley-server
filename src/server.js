@@ -108,17 +108,15 @@ mongoose
     const app = express()
 
     const corsOptions = {
-      origin: '*',
-      credentials: true
+      origin: '*'
     }
 
-    app.use(cors(corsOptions))
+    //app.use(cors(corsOptions))
     app.disable('x-powered-by')
 
     server.applyMiddleware({
       app,
-      path: '/graphql',
-      cors: false
+      cors: corsOptions
     })
 
     const httpServer = createServer(app)
