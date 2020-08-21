@@ -12,7 +12,6 @@ import cardModel from './card/model'
 import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
-require('dotenv').load()
 import {
   PORT,
   DB_USERNAME,
@@ -85,7 +84,7 @@ const resolvers = merge(
   customResolvers,
   subscriptionsResolvers
 )
-
+console.log(DB_NAME)
 mongoose
   .connect(
     `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
