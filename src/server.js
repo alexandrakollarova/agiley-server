@@ -61,6 +61,9 @@ const subscriptionsResolvers = {
       subscribe: () =>
         pubsub.asyncIterator([SUBSCRIPTION_CONSTANTS.ON_CARD_POS_CHANGE]),
     },
+    onConnect: (connectionParams, webSocket, context) => {
+      console.log('WEBSOCKET ==>', webSocket)
+    },
   },
 }
 
