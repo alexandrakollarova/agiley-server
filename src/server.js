@@ -60,11 +60,8 @@ const subscriptionsResolvers = {
     onCardPosChange: {
       subscribe: () =>
         pubsub.asyncIterator([SUBSCRIPTION_CONSTANTS.ON_CARD_POS_CHANGE]),
-    },
-    onConnect: (connectionParams, webSocket, context) => {
-      console.log('WEBSOCKET ==>', webSocket)
-    },
-  },
+    }
+  }
 }
 
 const customResolvers = {
@@ -111,6 +108,8 @@ mongoose
         variant: 'current'
       }
     })
+
+    console.log('APOLLO SERVER ==>', server)
 
     const app = express()
 
