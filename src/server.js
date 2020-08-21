@@ -109,13 +109,11 @@ mongoose
       }
     })
 
-    console.log('APOLLO SERVER ==>', server)
-
     const app = express()
 
     const corsOptions = {
       origin: '*',
-      credentials: true
+      //credentials: true
     }
 
     app.use(cors(corsOptions))
