@@ -102,7 +102,11 @@ mongoose
         project: projectModel,
         SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
         publisher: pubsub
-      })
+      }),
+      engine: {
+        reportSchema: true,
+        variant: 'current'
+      }
     })
 
     const app = express()
