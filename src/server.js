@@ -124,7 +124,7 @@ mongoose
     })
 
     const httpServer = createServer(app)
-    server.installSubscriptionHandlers(httpServer)
+    //server.installSubscriptionHandlers(httpServer)
 
     httpServer.listen({ port: PORT }, () => {
       console.log(`Server ready on port ${PORT}`)
