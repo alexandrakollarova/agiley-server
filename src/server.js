@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import { ApolloServer, gql } from 'apollo-server-express'
 import merge from 'lodash/merge'
 import { PubSub } from 'apollo-server'
-import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
 import { cardResolvers, cardTypeDefs } from './card'
 import { sectionResolvers, sectionTypeDefs } from './section'
@@ -103,16 +102,16 @@ mongoose
         section: sectionModel,
         project: projectModel,
         pubsub,
-        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
+        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
       },
       introspection: true,
-      playground: true,
+      playground: true
     })
 
     const app = express()
 
     const corsOptions = {
-      origin: '*',
+      origin: 'https://agiley.vercel.app/',
     }
 
     app.use(cors(corsOptions))
@@ -120,7 +119,7 @@ mongoose
 
     server.applyMiddleware({
       app,
-      cors: false,
+      cors: false
     })
 
     const httpServer = createServer(app)
@@ -128,27 +127,6 @@ mongoose
 
     httpServer.listen(PORT, () => {
       console.log(`Server ready on port ${PORT}`)
-
-      // new SubscriptionServer({
-      //   execute,
-      //   subscribe,
-      //   schema: resolvers,
-      //   onConnect: () => {
-      //     console.log('Now connected')
-      //   },
-      //   onSubscribe: () => {
-      //     console.log('Subscribed')
-      //   },
-      //   onUnsubsribe: () => {
-      //     console.log('Now unsubscribed')
-      //   },
-      //   onDisconnect: () => {
-      //     console.log('Now disconnected')
-      //   }
-      // }, {
-      //   server: httpServer,
-      //   path: '/graphql'
-      // })
     })
   })
   .catch((err) => {
