@@ -7,7 +7,6 @@ import { PubSub } from 'apollo-server'
 import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
 import { cardResolvers, cardTypeDefs } from './card'
-import bodyParser from 'body-parser'
 import { sectionResolvers, sectionTypeDefs } from './section'
 import { projectResolvers, projectTypeDefs } from './project'
 import cardModel from './card/model'
@@ -95,7 +94,7 @@ mongoose
   )
   .then(() => {
     console.log('MongoDB connected successfully')
-    console.log('RESOLVERS', resolvers)
+
     const server = new ApolloServer({
       typeDefs,
       resolvers,
@@ -106,15 +105,8 @@ mongoose
         pubsub,
         SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
       },
-      subscriptions: {
-        path: '/subscriptions',
-        onConnect: async (connectionParams, webSocket, context) => {
-          console.log('Subscription client connected using Apollo server\'s built-in SubscriptionServer.')
-        },
-        onDisconnect: async (webSocket, context) => {
-          console.log('Subscription client disconnected.')
-        }
-      }
+      introspection: true,
+      playground: true,
     })
 
     const app = express()
@@ -124,8 +116,6 @@ mongoose
     }
 
     app.use(cors(corsOptions))
-    app.use('/graphql', bodyParser.json())
-
     app.disable('x-powered-by')
 
     server.applyMiddleware({
