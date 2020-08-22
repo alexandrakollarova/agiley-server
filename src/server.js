@@ -111,7 +111,7 @@ mongoose
     const app = express()
 
     const corsOptions = {
-      origin: 'https://agiley.vercel.app/',
+      origin: '*',
     }
 
     app.use(cors(corsOptions))
