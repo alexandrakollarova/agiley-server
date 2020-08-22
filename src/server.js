@@ -3,7 +3,12 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import { ApolloServer, gql } from 'apollo-server-express'
 import merge from 'lodash/merge'
-import { PubSub } from 'apollo-server'
+import {
+  PubSub,
+  introspectSchema,
+  makeRemoteExecutableSchema,
+  ApolloServer
+} from 'apollo-server'
 import { createServer } from 'http'
 import { cardResolvers, cardTypeDefs } from './card'
 import { sectionResolvers, sectionTypeDefs } from './section'
@@ -12,7 +17,7 @@ import cardModel from './card/model'
 import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
-import { SubscriptionServer } from 'subscriptions-transport-ws'
+import fetch from 'node-fetch'
 import {
   PORT,
   DB_USERNAME,
@@ -23,6 +28,11 @@ import {
 } from '../config'
 
 require('events').EventEmitter.defaultMaxListeners = 100
+
+const link = new HttpLink({
+  uri: 'https://obscure-ravine-70559.herokuapp.com/graphql',
+  fetch
+})
 
 const typeDefs = gql`
   type Subscription {
@@ -86,6 +96,12 @@ const resolvers = merge(
   subscriptionsResolvers
 )
 
+const schema = await introspectSchema(link)
+const executableSchema = makeRemoteExecutableSchema({
+  schema,
+  link
+})
+
 mongoose
   .connect(
     `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
@@ -95,6 +111,7 @@ mongoose
     console.log('MongoDB connected successfully')
 
     const server = new ApolloServer({
+      schema: executableSchema,
       typeDefs,
       resolvers,
       context: {
@@ -109,17 +126,10 @@ mongoose
     })
 
     const app = express()
-
-    const corsOptions = {
-      origin: '*',
-    }
-
-    //app.use(cors(corsOptions))
     app.disable('x-powered-by')
 
     server.applyMiddleware({
-      app,
-      //cors: false
+      app
     })
 
     const httpServer = createServer(app)

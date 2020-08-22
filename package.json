@@ -28,6 +28,7 @@
     "graphql": "^15.2.0",
     "lodash": "^4.17.19",
     "mongoose": "^5.9.21",
+    "node-fetch": "^2.6.0",
     "subscriptions-transport-ws": "^0.9.18"
   }
 }
