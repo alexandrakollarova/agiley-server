@@ -107,15 +107,15 @@ mongoose
       //   publisher: pubsub
       // },
       context: async ({ req, connection }) => {
+        console.log('REQ ==>', req)
+
         console.log('CONNECTION ==>', connection)
-        if (connection) {
-          return {
-            card: cardModel,
-            section: sectionModel,
-            project: projectModel,
-            SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
-            publisher: pubsub
-          }
+        return {
+          card: cardModel,
+          section: sectionModel,
+          project: projectModel,
+          SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
+          publisher: pubsub
         }
       },
       subscriptions: {
