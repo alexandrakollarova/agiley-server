@@ -7,6 +7,7 @@ import { PubSub } from 'apollo-server'
 import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
 import { cardResolvers, cardTypeDefs } from './card'
+import bodyParser from 'body-parser'
 import { sectionResolvers, sectionTypeDefs } from './section'
 import { projectResolvers, projectTypeDefs } from './project'
 import cardModel from './card/model'
@@ -123,6 +124,8 @@ mongoose
     }
 
     app.use(cors(corsOptions))
+    app.use('/graphql', bodyParser.json())
+
     app.disable('x-powered-by')
 
     server.applyMiddleware({
