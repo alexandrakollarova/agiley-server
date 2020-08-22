@@ -14,7 +14,6 @@ import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
-import bodyParser from 'body-parser'
 import {
   PORT,
   DB_USERNAME,
@@ -95,19 +94,16 @@ mongoose
   )
   .then(() => {
     console.log('MongoDB connected successfully')
-
+    console.log('RESOLVERS', resolvers)
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      subscriptions: ({ req, res, connection }) => {
-        console.log('CONNECTION ==>', connection)
-        return {
-          card: cardModel,
-          section: sectionModel,
-          project: projectModel,
-          pubsub,
-          SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
-        }
+      context: {
+        card: cardModel,
+        section: sectionModel,
+        project: projectModel,
+        pubsub,
+        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
       }
     })
 
