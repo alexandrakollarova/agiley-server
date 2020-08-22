@@ -118,7 +118,6 @@ mongoose
     })
 
     const app = express()
-    app.use('/graphql', bodyParser.json())
 
     const corsOptions = {
       origin: '*',
