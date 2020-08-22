@@ -124,31 +124,33 @@ mongoose
     })
 
     const httpServer = createServer(app)
+    server.installSubscriptionHandlers(httpServer)
+
     httpServer.listen(PORT, () => {
       console.log(`Server ready on port ${PORT}`)
 
-      new SubscriptionServer({
-        execute,
-        subscribe,
-        schema: resolvers,
-        onConnect: () => {
-          console.log('Now connected')
-        },
-        onSubscribe: () => {
-          console.log('Subscribed')
-        },
-        onUnsubsribe: () => {
-          console.log('Now unsubscribed')
-        },
-        onDisconnect: () => {
-          console.log('Now disconnected')
-        }
-      }, {
-        server: httpServer,
-        path: '/graphql'
-      })
+      // new SubscriptionServer({
+      //   execute,
+      //   subscribe,
+      //   schema: resolvers,
+      //   onConnect: () => {
+      //     console.log('Now connected')
+      //   },
+      //   onSubscribe: () => {
+      //     console.log('Subscribed')
+      //   },
+      //   onUnsubsribe: () => {
+      //     console.log('Now unsubscribed')
+      //   },
+      //   onDisconnect: () => {
+      //     console.log('Now disconnected')
+      //   }
+      // }, {
+      //   server: httpServer,
+      //   path: '/graphql'
+      // })
+      // })
     })
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+      .catch((err) => {
+        console.log(err)
+      })
