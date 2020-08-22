@@ -99,7 +99,7 @@ mongoose
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: ({ req, res, connection }) => {
+      subscriptions: ({ req, res, connection }) => {
         console.log('CONNECTION ==>', connection)
         return {
           card: cardModel,
@@ -134,7 +134,7 @@ mongoose
       new SubscriptionServer({
         execute,
         subscribe,
-        //schema: resolvers,
+        schema: resolvers,
         onConnect: () => {
           console.log('Now connected')
         },
