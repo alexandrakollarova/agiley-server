@@ -110,6 +110,8 @@ mongoose
 
     const app = express()
 
+    app.use('/graphql', bodyParser.json())
+
     const corsOptions = {
       origin: '*',
     }
@@ -125,15 +127,6 @@ mongoose
     const httpServer = createServer(app)
     server.installSubscriptionHandlers(httpServer)
 
-    // const websocketServer = createServer((request, response) => {
-    //   response.writeHead(404)
-    //   response.end()
-    // })
-
-    // websocketServer.listen(WS_PORT, () => console.log(
-    //   `Websocket Server is running on port http://localhost:${WS_PORT}`
-    // ))
-
     httpServer.listen({ port: PORT }, () => {
       console.log(`Server is running on port ${PORT}`)
       new SubscriptionServer({
@@ -141,7 +134,7 @@ mongoose
         subscribe,
         schema: resolvers
       }, {
-        server: server,
+        server: httpServer,
         path: '/graphql'
       })
     })
