@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import { ApolloServer, graphqlExpress, gql } from 'apollo-server-express'
+import { ApolloServer, gql } from 'apollo-server-express'
 import merge from 'lodash/merge'
 import { PubSub } from 'apollo-server'
 import { execute, subscribe } from 'graphql'
@@ -125,17 +125,13 @@ mongoose
     app.use(cors(corsOptions))
     app.disable('x-powered-by')
 
-    server.use('/graphql', bodyParser.json(), graphqlExpress({
-      schema: resolvers
-    }))
-
     server.applyMiddleware({
       app,
       cors: false
     })
 
     const httpServer = createServer(app)
-    server.installSubscriptionHandlers(httpServer)
+    //server.installSubscriptionHandlers(httpServer)
 
     httpServer.listen({ port: PORT }, () => {
       console.log(`Server ready on port ${PORT}`)
