@@ -119,7 +119,7 @@ mongoose
 
     server.applyMiddleware({
       app,
-      cors: false
+      //cors: false
     })
 
     const httpServer = createServer(app)
