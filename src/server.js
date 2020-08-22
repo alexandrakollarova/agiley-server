@@ -120,7 +120,8 @@ mongoose
 
     server.applyMiddleware({
       app,
-      cors: false
+      cors: false,
+      path: '/graphql',
     })
 
     const httpServer = createServer(app)
