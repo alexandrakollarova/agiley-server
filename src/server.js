@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import { ApolloServer, gql } from 'apollo-server-express'
+import { ApolloServer, graphqlExpress, gql } from 'apollo-server-express'
 import merge from 'lodash/merge'
 import { PubSub } from 'apollo-server'
 import { execute, subscribe } from 'graphql'
@@ -99,7 +99,6 @@ mongoose
     const server = new ApolloServer({
       typeDefs,
       context: (arg) => {
-        console.log('CONNECTION ==>', arg.connection)
         return {
           card: cardModel,
           section: sectionModel,
@@ -125,6 +124,10 @@ mongoose
 
     app.use(cors(corsOptions))
     app.disable('x-powered-by')
+
+    server.use('/graphql', bodyParser.json(), graphqlExpress({
+      schema: resolvers
+    }))
 
     server.applyMiddleware({
       app,
