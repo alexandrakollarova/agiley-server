@@ -134,7 +134,7 @@ mongoose
       new SubscriptionServer({
         execute,
         subscribe,
-        schema: resolvers,
+        //schema: resolvers,
         onConnect: () => {
           console.log('Now connected')
         },
@@ -149,7 +149,7 @@ mongoose
         }
       }, {
         server: httpServer,
-        path: '/subscriptions'
+        path: '/graphql'
       })
     })
   })
