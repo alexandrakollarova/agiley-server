@@ -12,6 +12,7 @@ import cardModel from './card/model'
 import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
+import { SubscriptionServer } from 'subscriptions-transport-ws'
 import {
   PORT,
   DB_USERNAME,
@@ -20,6 +21,8 @@ import {
   DB_PORT,
   DB_NAME
 } from '../config'
+
+const WS_PORT = 5000
 
 require('events').EventEmitter.defaultMaxListeners = 100
 
@@ -102,18 +105,13 @@ mongoose
         project: projectModel,
         SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
         publisher: pubsub
-      }),
-      engine: {
-        reportSchema: true,
-        variant: 'current'
-      }
+      })
     })
 
     const app = express()
 
     const corsOptions = {
       origin: '*',
-      //credentials: true
     }
 
     app.use(cors(corsOptions))
@@ -127,8 +125,25 @@ mongoose
     const httpServer = createServer(app)
     server.installSubscriptionHandlers(httpServer)
 
+    // const websocketServer = createServer((request, response) => {
+    //   response.writeHead(404)
+    //   response.end()
+    // })
+
+    // websocketServer.listen(WS_PORT, () => console.log(
+    //   `Websocket Server is running on port http://localhost:${WS_PORT}`
+    // ))
+
     httpServer.listen({ port: PORT }, () => {
       console.log(`Server is running on port ${PORT}`)
+      new SubscriptionServer({
+        execute,
+        subscribe,
+        schema: resolvers
+      }, {
+        server: server,
+        path: '/graphql'
+      })
     })
   })
   .catch((err) => {
