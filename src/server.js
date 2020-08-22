@@ -154,7 +154,7 @@ mongoose
           console.log('Now disconnected')
         }
       }, {
-        server: httpServer,
+        server,
         path: '/graphql'
       })
     })
