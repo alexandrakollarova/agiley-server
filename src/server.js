@@ -121,7 +121,6 @@ mongoose
     server.applyMiddleware({
       app,
       cors: false,
-      path: '/graphql',
     })
 
     const httpServer = createServer(app)
@@ -147,7 +146,7 @@ mongoose
           console.log('Now disconnected')
         }
       }, {
-        server: httpServer,
+        server,
         path: '/graphql'
       })
     })
