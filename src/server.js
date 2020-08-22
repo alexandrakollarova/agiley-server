@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import { ApolloServer, gql } from 'apollo-server-express'
 import merge from 'lodash/merge'
 import { PubSub } from 'apollo-server'
+import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
 import { cardResolvers, cardTypeDefs } from './card'
 import { sectionResolvers, sectionTypeDefs } from './section'
@@ -13,6 +14,7 @@ import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
+import bodyParser from 'body-parser'
 import {
   PORT,
   DB_USERNAME,
@@ -99,6 +101,10 @@ mongoose
     const server = new ApolloServer({
       typeDefs,
       resolvers,
+      subscriptions: {
+        onConnect: () => console.log('Connected to websocket')
+      },
+      tracing: true,
       context: () => ({
         card: cardModel,
         section: sectionModel,
@@ -109,7 +115,6 @@ mongoose
     })
 
     const app = express()
-
     app.use('/graphql', bodyParser.json())
 
     const corsOptions = {
@@ -125,10 +130,11 @@ mongoose
     })
 
     const httpServer = createServer(app)
-    //server.installSubscriptionHandlers(httpServer)
+    server.installSubscriptionHandlers(httpServer)
 
     httpServer.listen({ port: PORT }, () => {
-      console.log(`Server is running on port ${PORT}`)
+      console.log(`🚀 Server ready on port ${PORT}`)
+      console.log(`🚀 Subscriptions ready on port ${PORT}`)
       new SubscriptionServer({
         execute,
         subscribe,
