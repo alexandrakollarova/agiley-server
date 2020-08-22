@@ -99,7 +99,8 @@ mongoose
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: ({ req, connection }) => {
+      context: ({ req, res, connection }) => {
+        console.log('RES ==>', res)
         console.log('CONNECTION ==>', connection)
         return {
           card: cardModel,
