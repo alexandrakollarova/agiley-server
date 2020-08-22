@@ -98,15 +98,8 @@ mongoose
 
     const server = new ApolloServer({
       typeDefs,
-      resolvers,
-      subscriptions: {
-        onConnect: () => console.log('Connected to websocket'),
-        onDisconnect: () => console.log('Disconnected from websocket')
-      },
-      tracing: true,
-      debug: true,
       context: (arg) => {
-        console.log('ARGUMENT ==>', arg)
+        console.log('CONNECTION ==>', arg.connection)
         return {
           card: cardModel,
           section: sectionModel,
@@ -114,7 +107,14 @@ mongoose
           SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
           publisher: pubsub
         }
-      }
+      },
+      resolvers,
+      subscriptions: {
+        onConnect: () => console.log('Connected to websocket'),
+        onDisconnect: () => console.log('Disconnected from websocket')
+      },
+      tracing: true,
+      debug: true
     })
 
     const app = express()
@@ -136,7 +136,7 @@ mongoose
 
     httpServer.listen({ port: PORT }, () => {
       console.log(`Server ready on port ${PORT}`)
-      console.log(`Subscriptions ready on port ${PORT}`)
+
       new SubscriptionServer({
         execute,
         subscribe,
