@@ -118,7 +118,7 @@ mongoose
     })
 
     const app = express()
-    app.use('/graph', bodyParser.json())
+    app.use('/graphql', bodyParser.json())
 
     const corsOptions = {
       origin: '*',
@@ -144,7 +144,7 @@ mongoose
         schema: resolvers
       }, {
         server: httpServer,
-        path: '/graph'
+        path: '/graphql'
       })
     })
   })
