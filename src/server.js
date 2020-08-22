@@ -102,7 +102,8 @@ mongoose
       typeDefs,
       resolvers,
       subscriptions: {
-        onConnect: () => console.log('Connected to websocket')
+        onConnect: () => console.log('Connected to websocket'),
+        onDisconnect: () => console.log('Disconnected from websocket')
       },
       tracing: true,
       context: () => ({
@@ -133,15 +134,15 @@ mongoose
     server.installSubscriptionHandlers(httpServer)
 
     httpServer.listen({ port: PORT }, () => {
-      console.log(`🚀 Server ready on port ${PORT}`)
-      console.log(`🚀 Subscriptions ready on port ${PORT}`)
+      console.log(`Server ready on port ${PORT}`)
+      console.log(`Subscriptions ready on port ${PORT}`)
       new SubscriptionServer({
         execute,
         subscribe,
         schema: resolvers
       }, {
         server: httpServer,
-        path: '/graphql'
+        path: '/subscription'
       })
     })
   })
