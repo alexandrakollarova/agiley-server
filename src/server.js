@@ -104,6 +104,15 @@ mongoose
         project: projectModel,
         pubsub,
         SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
+      },
+      subscriptions: {
+        path: '/subscriptions',
+        onConnect: async (connectionParams, webSocket, context) => {
+          console.log('Subscription client connected using Apollo server\'s built-in SubscriptionServer.')
+        },
+        onDisconnect: async (webSocket, context) => {
+          console.log('Subscription client disconnected.')
+        }
       }
     })
 
