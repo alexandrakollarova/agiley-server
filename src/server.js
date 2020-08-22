@@ -100,7 +100,6 @@ mongoose
       typeDefs,
       resolvers,
       context: ({ req, res, connection }) => {
-        console.log('RES ==>', res)
         console.log('CONNECTION ==>', connection)
         return {
           card: cardModel,
@@ -150,7 +149,7 @@ mongoose
         }
       }, {
         server: httpServer,
-        path: '/graphql'
+        path: '/subscriptions'
       })
     })
   })
