@@ -141,7 +141,19 @@ mongoose
       new SubscriptionServer({
         execute,
         subscribe,
-        schema: resolvers
+        schema: resolvers,
+        onConnect: () => {
+          console.log('Websocket connection established')
+        },
+        onSubscribe: () => {
+          console.log('The client has been subscribed')
+        },
+        onUnsubsribe: () => {
+          console.log('Now unsubscribed')
+        },
+        onDisconnect: () => {
+          console.log('Now disconnected')
+        }
       }, {
         server: httpServer,
         path: '/graphql'
