@@ -99,26 +99,14 @@ mongoose
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      subscriptions: {
-        onConnect: () => console.log('Subscriptions connected')
-      },
       context: async ({ req, connection }) => {
         console.log('CONNECTION ==>', connection)
         return {
           card: cardModel,
           section: sectionModel,
           project: projectModel,
+          pubsub,
           SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
-          publisher: pubsub
-        }
-      },
-      subscriptions: {
-        path: '/subscriptions',
-        onConnect: async (connectionParams, webSocket, context) => {
-          console.log('Subscription client connected using Apollo server\'s built-in SubscriptionServer.')
-        },
-        onDisconnect: async (webSocket, context) => {
-          console.log('Subscription client disconnected.')
         }
       }
     })
