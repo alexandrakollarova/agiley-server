@@ -24,8 +24,6 @@ import {
   DB_NAME
 } from '../config'
 
-const WS_PORT = 5000
-
 require('events').EventEmitter.defaultMaxListeners = 100
 
 const typeDefs = gql`
@@ -106,13 +104,17 @@ mongoose
         onDisconnect: () => console.log('Disconnected from websocket')
       },
       tracing: true,
-      context: () => ({
-        card: cardModel,
-        section: sectionModel,
-        project: projectModel,
-        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
-        publisher: pubsub
-      })
+      debug: true,
+      context: (arg) => {
+        console.log('ARGUMENT ==>', arg)
+        return {
+          card: cardModel,
+          section: sectionModel,
+          project: projectModel,
+          SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
+          publisher: pubsub
+        }
+      }
     })
 
     const app = express()
