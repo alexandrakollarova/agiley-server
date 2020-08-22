@@ -98,22 +98,35 @@ mongoose
 
     const server = new ApolloServer({
       typeDefs,
-      context: (arg) => {
-        return {
-          card: cardModel,
-          section: sectionModel,
-          project: projectModel,
-          SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
-          publisher: pubsub
+      resolvers,
+      // context: {
+      //   card: cardModel,
+      //   section: sectionModel,
+      //   project: projectModel,
+      //   SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
+      //   publisher: pubsub
+      // },
+      context: async ({ req, connection }) => {
+        console.log('CONNECTION ==>', connection)
+        if (connection) {
+          return {
+            card: cardModel,
+            section: sectionModel,
+            project: projectModel,
+            SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS,
+            publisher: pubsub
+          }
         }
       },
-      resolvers,
       subscriptions: {
-        onConnect: () => console.log('Connected to websocket'),
-        onDisconnect: () => console.log('Disconnected from websocket')
-      },
-      tracing: true,
-      debug: true
+        path: '/subscriptions',
+        onConnect: async (connectionParams, webSocket, context) => {
+          console.log('Subscription client connected using Apollo server\'s built-in SubscriptionServer.')
+        },
+        onDisconnect: async (webSocket, context) => {
+          console.log('Subscription client disconnected.')
+        }
+      }
     })
 
     const app = express()
@@ -141,10 +154,10 @@ mongoose
         subscribe,
         schema: resolvers,
         onConnect: () => {
-          console.log('Websocket connection established')
+          console.log('Now connected')
         },
         onSubscribe: () => {
-          console.log('The client has been subscribed')
+          console.log('Subscribed')
         },
         onUnsubsribe: () => {
           console.log('Now unsubscribed')
