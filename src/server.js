@@ -127,7 +127,10 @@ mongoose
       },
       introspection: true,
       playground: true,
-      graphiql: true
+      graphiql: true,
+      engine: {
+        reportSchema: true
+      }
     })
 
     const app = express()
