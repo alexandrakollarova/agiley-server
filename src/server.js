@@ -6,8 +6,7 @@ import merge from 'lodash/merge'
 import {
   PubSub,
   introspectSchema,
-  makeRemoteExecutableSchema,
-  ApolloServer
+  makeRemoteExecutableSchema
 } from 'apollo-server'
 import { createServer } from 'http'
 import { cardResolvers, cardTypeDefs } from './card'
@@ -17,7 +16,6 @@ import cardModel from './card/model'
 import sectionModel from './section/model'
 import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
-import fetch from 'node-fetch'
 import {
   PORT,
   DB_USERNAME,
@@ -26,13 +24,10 @@ import {
   DB_PORT,
   DB_NAME
 } from '../config'
+import fetch from 'node-fetch'
+import { HttpLink } from 'apollo-link-http'
 
 require('events').EventEmitter.defaultMaxListeners = 100
-
-const link = new HttpLink({
-  uri: 'https://obscure-ravine-70559.herokuapp.com/graphql',
-  fetch
-})
 
 const typeDefs = gql`
   type Subscription {
@@ -96,12 +91,6 @@ const resolvers = merge(
   subscriptionsResolvers
 )
 
-const schema = await introspectSchema(link)
-const executableSchema = makeRemoteExecutableSchema({
-  schema,
-  link
-})
-
 mongoose
   .connect(
     `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
@@ -110,8 +99,23 @@ mongoose
   .then(() => {
     console.log('MongoDB connected successfully')
 
+
+    // const link = new HttpLink({
+    //   uri: 'https://obscure-ravine-70559.herokuapp.com/graphql',
+    //   fetch
+    // })
+
+    // const schema = async () => {
+    //   await introspectSchema(link)
+    // }
+
+    // const executableSchema = makeRemoteExecutableSchema({
+    //   schema,
+    //   link
+    // })
+
     const server = new ApolloServer({
-      schema: executableSchema,
+      //schema: executableSchema,
       typeDefs,
       resolvers,
       context: {

@@ -19,6 +19,7 @@
     "@babel/core": "^7.11.4",
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.0",
+    "apollo-link-http": "^1.5.17",
     "apollo-server": "^2.16.1",
     "apollo-server-express": "^2.15.1",
     "body-parser": "^1.19.0",
