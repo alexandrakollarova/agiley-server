@@ -136,7 +136,8 @@ mongoose
       playground: true,
       graphiql: true,
       engine: {
-        reportSchema: true
+        reportSchema: true,
+        variant: 'current'
       }
     })
 
