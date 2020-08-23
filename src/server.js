@@ -97,7 +97,6 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )
   .then((res) => {
-    console.log('RES', res)
     console.log('MongoDB connected successfully')
 
 
@@ -127,7 +126,8 @@ mongoose
         SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
       },
       introspection: true,
-      playground: true
+      playground: true,
+      graphiql: true
     })
 
     const app = express()

@@ -32,10 +32,8 @@ class Section {
 
   static insertSection(sectionInfo) {
     const section = this(sectionInfo)
-
     return section.save()
   }
-
 
   static addInitialSections(sections) {
     return this.insertMany(sections)
