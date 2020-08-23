@@ -1,13 +1,8 @@
 import express from 'express'
-import cors from 'cors'
 import mongoose from 'mongoose'
 import { ApolloServer, gql } from 'apollo-server-express'
 import merge from 'lodash/merge'
-import {
-  PubSub,
-  introspectSchema,
-  makeRemoteExecutableSchema
-} from 'apollo-server'
+import { PubSub } from 'apollo-server'
 import { createServer } from 'http'
 import { cardResolvers, cardTypeDefs } from './card'
 import { sectionResolvers, sectionTypeDefs } from './section'
@@ -18,23 +13,12 @@ import projectModel from './project/model'
 import SUBSCRIPTION_CONSTANTS from './subscriptionConstants'
 import {
   PORT,
-  DB_USERNAME,
-  DB_PASSWORD,
-  DB_HOST,
-  DB_PORT,
-  DB_NAME,
   MONGODB_URI
 } from '../config'
-import fetch from 'node-fetch'
-import { HttpLink } from 'apollo-link-http'
 
 require('events').EventEmitter.defaultMaxListeners = 100
 
 const typeDefs = gql`
-  extend type Query {
-    helloWorld: String
-  }
-
   type Subscription {
     projectAdded: Project
     sectionAdded: Section
@@ -76,9 +60,6 @@ const subscriptionsResolvers = {
 }
 
 const customResolvers = {
-  Query: {
-    helloWorld: () => 'Hello World'
-  },
   Section: {
     cards(parent, args, cxt) {
       try {
@@ -102,7 +83,6 @@ const resolvers = merge(
 mongoose
   .connect(
     MONGODB_URI,
-    //`mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )
   .then(() => {
@@ -130,9 +110,7 @@ mongoose
     const app = express()
     app.disable('x-powered-by')
 
-    server.applyMiddleware({
-      app
-    })
+    server.applyMiddleware({ app })
 
     const httpServer = createServer(app)
     server.installSubscriptionHandlers(httpServer)
