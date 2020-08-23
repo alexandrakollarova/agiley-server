@@ -3,5 +3,5 @@ const getSectionsByProjectId = require('./getSectionsByProjectId').default
 
 module.exports = {
   getSections,
-  getSectionsByProjectId
+  getSectionsByProjectId,
 }

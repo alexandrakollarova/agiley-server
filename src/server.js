@@ -30,6 +30,10 @@ import { HttpLink } from 'apollo-link-http'
 require('events').EventEmitter.defaultMaxListeners = 100
 
 const typeDefs = gql`
+  extend type Query {
+    helloWorld: String
+  }
+
   type Subscription {
     projectAdded: Project
     sectionAdded: Section
@@ -71,6 +75,9 @@ const subscriptionsResolvers = {
 }
 
 const customResolvers = {
+  Query: {
+    helloWorld: () => 'Hello World'
+  },
   Section: {
     cards(parent, args, cxt) {
       try {

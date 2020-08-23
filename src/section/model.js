@@ -18,7 +18,7 @@ const sectionSchema = new Mongoose.Schema({
     type: Mongoose.Schema.Types.ObjectId,
     ref: 'Project',
     required: true
-  },
+  }
 })
 
 class Section {
