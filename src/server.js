@@ -22,7 +22,8 @@ import {
   DB_PASSWORD,
   DB_HOST,
   DB_PORT,
-  DB_NAME
+  DB_NAME,
+  DB_LOCAL_URI
 } from '../config'
 import fetch from 'node-fetch'
 import { HttpLink } from 'apollo-link-http'
@@ -100,37 +101,25 @@ const resolvers = merge(
 
 mongoose
   .connect(
-    `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
+    //`mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
+    `mongodb://${DB_LOCAL_URI}`,
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )
-  .then((res) => {
+  .then(() => {
     console.log('MongoDB connected successfully')
 
-
-    // const link = new HttpLink({
-    //   uri: 'https://obscure-ravine-70559.herokuapp.com/graphql',
-    //   fetch
-    // })
-
-    // const schema = async () => {
-    //   await introspectSchema(link)
-    // }
-
-    // const executableSchema = makeRemoteExecutableSchema({
-    //   schema,
-    //   link
-    // })
-
     const server = new ApolloServer({
-      //schema: executableSchema,
       typeDefs,
       resolvers,
-      context: {
-        card: cardModel,
-        section: sectionModel,
-        project: projectModel,
-        pubsub,
-        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
+      context: () => {
+        console.log('HERE')
+        return {
+          card: cardModel,
+          section: sectionModel,
+          project: projectModel,
+          pubsub,
+          SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
+        }
       },
       introspection: true,
       playground: true,
