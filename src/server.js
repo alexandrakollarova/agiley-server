@@ -111,14 +111,12 @@ mongoose
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: () => {
-        return {
-          card: cardModel,
-          section: sectionModel,
-          project: projectModel,
-          pubsub,
-          SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
-        }
+      context: {
+        card: cardModel,
+        section: sectionModel,
+        project: projectModel,
+        pubsub,
+        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
       },
       introspection: true,
       playground: true,
@@ -144,5 +142,5 @@ mongoose
     })
   })
   .catch((err) => {
-    console.log(err)
+    console.log('error =>', err)
   })
