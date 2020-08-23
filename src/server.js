@@ -23,7 +23,7 @@ import {
   DB_HOST,
   DB_PORT,
   DB_NAME,
-  DB_LOCAL_URI
+  MONGODB_URI
 } from '../config'
 import fetch from 'node-fetch'
 import { HttpLink } from 'apollo-link-http'
@@ -101,7 +101,8 @@ const resolvers = merge(
 
 mongoose
   .connect(
-    `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
+    MONGODB_URI,
+    //`mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )
   .then(() => {
