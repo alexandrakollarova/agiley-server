@@ -101,7 +101,6 @@ const resolvers = merge(
 
 mongoose
   .connect(
-    // `mongodb://${DB_USERNAME}:${DB_PASSWORD}@realm.mongodb.com:27020/?authMechanism=PLAIN&authSource=%24external&ssl=true&appName=agiley_realm-ndvmo:mongodb-atlas:local-userpass`,
     `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?ssl=true&replicaSet=xxx-shard-0&authSource=admin`,
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )

@@ -8,5 +8,5 @@ module.exports = {
   DB_HOST: process.env.DB_HOST,
   DB_PORT: process.env.DB_PORT,
   DB_NAME: process.env.DB_NAME,
-  DB_LOCAL_URI: process.env.DB_LOCAL_URI
+  MONGODB_URI: process.env.MONGODB_URI
 }
