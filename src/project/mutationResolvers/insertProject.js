@@ -11,7 +11,7 @@ export default async (__, args, cxt) => {
     //   projectAdded: project
     // })
 
-    cxt.pubsub(ctx.subscriptions.PROJECT_ADDED, {
+    cxt.pubsub(cxt.subscriptions.PROJECT_ADDED, {
       projectAdded: project
     })
 
