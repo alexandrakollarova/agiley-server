@@ -3,7 +3,7 @@ export default async (__, args, cxt) => {
     const projectInfo = {
       title: args.request.title
     }
-    console.log('CONTEXT', cxt)
+    console.log('CONTEXT PUBLISHER', cxt.publisher)
 
     const project = await cxt.project.insertProject(projectInfo)
 
