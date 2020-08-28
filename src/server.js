@@ -60,6 +60,11 @@ const subscriptionsResolvers = {
 }
 
 const customResolvers = {
+  Project: {
+    sections(parent, args, cxt) {
+      return cxt.section.getSectionsByProjectId(parent._id)
+    }
+  },
   Section: {
     cards(parent, args, cxt) {
       try {
@@ -95,8 +100,8 @@ mongoose
         card: cardModel,
         section: sectionModel,
         project: projectModel,
-        pubsub,
-        SUBSCRIPTION_CONSTANTS: SUBSCRIPTION_CONSTANTS
+        publisher: pubsub,
+        SUBSCRIPTION_CONSTANTS
       },
       introspection: true,
       playground: true,
@@ -104,6 +109,14 @@ mongoose
       engine: {
         reportSchema: true,
         variant: 'current'
+      },
+      subscriptions: {
+        onConnect: async () => {
+          console.log('Subscription client connected')
+        },
+        onDisconnect: async () => {
+          console.log('Subscription client disconnected')
+        }
       }
     })
 
